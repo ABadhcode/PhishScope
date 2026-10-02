@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div>
+    <div class="eyebrow">SOC PHISHING TRIAGE</div>
+    <h1>Investigation workspace</h1>
+    <p>Analyze suspicious emails and URLs using explainable, passive checks.</p>
+  </div>
+  <a class="button" href="{{ url_for('main.investigate') }}">New investigation</a>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Recent cases</h2>
+    <span>{{ cases|length }} shown</span>
+  </div>
+  {% if cases %}
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>ID</th><th>Type</th><th>Target</th><th>Risk</th><th>Verdict</th><th>Status</th><th>Created</th></tr></thead>
+    <tbody>
+    {% for c in cases %}
+      <tr>
+        <td><a href="{{ url_for('main.case', case_id=c.id) }}">#{{ c.id }}</a></td>
+        <td>{{ c.case_type }}</td>
+        <td class="truncate">{{ c.target }}</td>
+        <td>{{ c.risk_score }}/100</td>
+        <td><span class="badge">{{ c.verdict }}</span></td>
+        <td>{{ c.status }}</td>
+        <td>{{ c.created_at }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% else %}
+    <div class="empty">No investigations yet.</div>
+  {% endif %}
+</section>
+{% endblock %}

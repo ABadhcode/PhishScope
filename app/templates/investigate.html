@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-title">
+  <div class="eyebrow">NEW INVESTIGATION</div>
+  <h1>Choose an investigation type</h1>
+  <p>PhishScope performs local, passive analysis. It does not visit submitted URLs or execute attachments.</p>
+</div>
+
+<div class="grid-2">
+  <section class="panel">
+    <div class="eyebrow">EMAIL TRIAGE</div>
+    <h2>Analyze an .eml file</h2>
+    <p>Extract sender information, authentication evidence, URLs and attachments.</p>
+    <form action="{{ url_for('main.investigate_email') }}" method="post" enctype="multipart/form-data">
+      <label>EML file</label>
+      <input type="file" name="email_file" accept=".eml" required>
+      <button class="button" type="submit">Analyze email</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">URL TRIAGE</div>
+    <h2>Analyze a suspicious URL</h2>
+    <p>Inspect URL structure, hostname, scheme, keywords, redirects and other passive indicators.</p>
+    <form action="{{ url_for('main.investigate_url') }}" method="post">
+      <label for="url">Suspicious URL</label>
+      <input id="url" name="url" type="text" placeholder="https://example.com/login" required>
+      <button class="button" type="submit">Analyze URL</button>
+    </form>
+    <div class="safe-note">Safe by design: the URL is parsed locally and is never requested by the application.</div>
+  </section>
+</div>
+{% endblock %}

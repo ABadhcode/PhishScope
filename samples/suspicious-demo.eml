@@ -1,0 +1,12 @@
+From: Security Alert <alert@secure-example.test>
+To: analyst@example.test
+Subject: Urgent account verification required
+Return-Path: <bounce@mailer.example.test>
+Reply-To: support@different-example.test
+Authentication-Results: mx.example.test; spf=fail; dkim=fail; dmarc=fail
+Received-SPF: fail
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+
+Your account is suspended. Verify immediately:
+http://192.0.2.10/login/verify

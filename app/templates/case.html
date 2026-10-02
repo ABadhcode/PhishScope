@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-title">
+  <div class="eyebrow">{{ case.case_type }} CASE #{{ case.id }}</div>
+  <h1>{{ case.target }}</h1>
+  {% if case.subject %}<p>{{ case.subject }}</p>{% endif %}
+</div>
+
+<div class="grid-2">
+  <section class="panel">
+    <div class="score">
+      <span>Risk score</span>
+      <strong>{{ case.risk_score }}/100</strong>
+    </div>
+    <div class="verdict">{{ case.verdict }}</div>
+    <h3>Findings</h3>
+    <ul class="findings">
+      {% for finding in case.findings %}
+        <li>{{ finding }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>Analyst disposition</h2>
+    <form method="post">
+      <label>Status</label>
+      <select name="status">
+        {% for s in ["Open", "Investigating", "Closed"] %}
+          <option value="{{ s }}" {% if case.status == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+      <label>Notes</label>
+      <textarea name="notes" rows="10" placeholder="Document evidence, reasoning and next steps...">{{ case.notes }}</textarea>
+      <button class="button" type="submit">Save case</button>
+    </form>
+  </section>
+</div>
+{% endblock %}
