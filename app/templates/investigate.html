@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}New Investigation · PhishScope{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <div class="eyebrow">NEW CASE</div>
+        <h1>Analyze a suspicious email</h1>
+        <p>PhishScope parses message headers and body content without opening links or executing attachments.</p>
+    </div>
+</section>
+
+<section class="panel upload-panel">
+    {% if error %}
+    <div class="alert">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        <label class="dropzone">
+            <span class="upload-icon">↑</span>
+            <strong>Select an .eml file</strong>
+            <span>Maximum file size: 2 MB</span>
+            <input type="file" name="eml_file" accept=".eml,message/rfc822" required>
+        </label>
+
+        <div class="notice">
+            <strong>Safe by design:</strong> URLs are parsed as text only. The application never visits URLs or launches attachments.
+        </div>
+
+        <button class="button" type="submit">Start investigation</button>
+    </form>
+</section>
+{% endblock %}

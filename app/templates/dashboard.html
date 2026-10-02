@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · PhishScope{% endblock %}
+
+{% block content %}
+<section class="hero compact">
+    <div>
+        <div class="eyebrow">EMAIL SECURITY / TRIAGE</div>
+        <h1>Phishing investigation workspace</h1>
+        <p>Analyze suspicious email files, extract indicators, record findings, and track analyst disposition.</p>
+    </div>
+    <a class="button" href="{{ url_for('main.investigate') }}">Analyze .eml</a>
+</section>
+
+<section class="stats">
+    <article class="stat">
+        <span>Total cases</span>
+        <strong>{{ stats.total or 0 }}</strong>
+    </article>
+    <article class="stat">
+        <span>High risk</span>
+        <strong>{{ stats.high_risk or 0 }}</strong>
+    </article>
+    <article class="stat">
+        <span>Open / investigating</span>
+        <strong>{{ stats.open_cases or 0 }}</strong>
+    </article>
+</section>
+
+<section class="panel">
+    <div class="section-head">
+        <div>
+            <div class="eyebrow">CASE QUEUE</div>
+            <h2>Recent investigations</h2>
+        </div>
+    </div>
+
+    {% if rows %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Subject</th>
+                    <th>Sender</th>
+                    <th>Risk</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td><a href="{{ url_for('main.case_detail', case_id=row.id) }}">#{{ row.id }}</a></td>
+                    <td>{{ row.subject }}</td>
+                    <td class="mono">{{ row.sender }}</td>
+                    <td><span class="risk risk-{{ row.verdict|lower|replace(' ', '-') }}">{{ row.score }} · {{ row.verdict }}</span></td>
+                    <td>{{ row.status }}</td>
+                    <td>{{ row.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty">
+        <h3>No investigations yet</h3>
+        <p>Upload an RFC 822 / .eml message to create your first case.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

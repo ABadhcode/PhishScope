@@ -1,0 +1,20 @@
+From: "Microsoft Support" <security@microsoft-support-check.xyz>
+To: analyst@example.com
+Return-Path: <mailer@delivery-check.top>
+Reply-To: <helpdesk@account-verify.top>
+Subject: Urgent: verify your password immediately
+Date: Sat, 03 Oct 2026 08:00:00 +0530
+Message-ID: <demo-001@example.com>
+Authentication-Results: mx.example.com; spf=fail smtp.mailfrom=delivery-check.top; dkim=fail; dmarc=fail
+Received-SPF: fail (example.com: domain of delivery-check.top does not designate permitted sender)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+
+Security alert.
+
+We detected unusual activity. Your account will be suspended.
+Verify your password immediately using this login page:
+
+https://192.0.2.15/account/verify?session=example
+
+If you do not click the link, access may expire.

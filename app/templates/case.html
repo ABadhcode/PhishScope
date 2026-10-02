@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Case #{{ case.id }} · PhishScope{% endblock %}
+
+{% block content %}
+<section class="case-head">
+    <div>
+        <div class="eyebrow">CASE #{{ case.id }}</div>
+        <h1>{{ case.subject }}</h1>
+        <p class="mono">{{ case.sender }} → {{ case.recipient }}</p>
+    </div>
+    <div class="score-card">
+        <span>Risk score</span>
+        <strong>{{ case.score }}</strong>
+        <small>{{ case.verdict }}</small>
+    </div>
+</section>
+
+<section class="grid two">
+    <article class="panel">
+        <div class="section-head">
+            <div>
+                <div class="eyebrow">ANALYSIS</div>
+                <h2>Findings</h2>
+            </div>
+            <span class="risk risk-{{ case.verdict|lower|replace(' ', '-') }}">{{ case.verdict }}</span>
+        </div>
+
+        {% if case.indicators.findings %}
+        <div class="finding-list">
+            {% for finding in case.indicators.findings %}
+            <div class="finding">
+                <span class="finding-type">{{ finding[2] }}</span>
+                <div>
+                    <strong>{{ finding[0] }}</strong>
+                    <small>+{{ finding[1] }} risk points</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="muted">No rule-based findings were triggered. Manual review may still be required.</p>
+        {% endif %}
+    </article>
+
+    <article class="panel">
+        <div class="eyebrow">ANALYST WORKFLOW</div>
+        <h2>Disposition</h2>
+        <form method="post">
+            <label>Status</label>
+            <select name="status">
+                {% for status in ["Open", "Investigating", "Closed"] %}
+                <option value="{{ status }}" {% if case.status == status %}selected{% endif %}>{{ status }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Analyst notes</label>
+            <textarea name="notes" rows="9" placeholder="Record validation steps, user impact, containment actions, or escalation notes...">{{ case.notes }}</textarea>
+
+            <button class="button" type="submit">Save case</button>
+        </form>
+    </article>
+</section>
+
+<section class="grid two">
+    <article class="panel">
+        <div class="eyebrow">INDICATORS</div>
+        <h2>URLs</h2>
+        {% if case.indicators.urls %}
+            {% for item in case.indicators.urls %}
+            <div class="ioc mono">{{ item }}</div>
+            {% endfor %}
+        {% else %}
+            <p class="muted">No URLs extracted.</p>
+        {% endif %}
+    </article>
+
+    <article class="panel">
+        <div class="eyebrow">INDICATORS</div>
+        <h2>Attachments</h2>
+        {% if case.indicators.attachments %}
+            {% for item in case.indicators.attachments %}
+            <div class="ioc"><strong>{{ item.filename }}</strong><span>{{ item.content_type }}</span></div>
+            {% endfor %}
+        {% else %}
+            <p class="muted">No attachments found.</p>
+        {% endif %}
+    </article>
+</section>
+
+<section class="panel">
+    <div class="eyebrow">MESSAGE AUTHENTICATION</div>
+    <h2>Relevant headers</h2>
+    <dl class="headers">
+        {% for key, value in case.indicators.headers.items() %}
+        <div>
+            <dt>{{ key|replace('_', ' ')|title }}</dt>
+            <dd class="mono">{{ value or "Not present" }}</dd>
+        </div>
+        {% endfor %}
+    </dl>
+</section>
+{% endblock %}
